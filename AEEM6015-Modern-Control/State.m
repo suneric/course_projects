@@ -1,0 +1,29 @@
+function out=State(in)
+pn = in(1);
+pe = in(2);
+pd = in(3);
+u = in(4);
+v = in(5);
+w = in(6);
+phi = in(7);
+theta = in(8);
+psi = in(9);
+% inertial frame to body frame transformation
+R_roll = [...
+          1, 0, 0;...
+          0, cos(phi), sin(phi);...
+          0, -sin(phi), cos(phi)];
+R_pitch = [...
+          cos(theta), 0, -sin(theta);...
+          0, 1, 0;...
+          sin(theta), 0, cos(theta)];
+R_yaw = [...
+          cos(psi), sin(psi), 0;...
+          -sin(psi), cos(psi), 0;...
+          0, 0, 1];
+R = R_roll*R_pitch*R_yaw;  
+% body frame to inertial frame
+R = R';
+pdot = R*[u;v;w];
+out = [pn;pe;pd;pdot;psi];
+end
